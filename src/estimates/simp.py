@@ -150,7 +150,10 @@ class SimpAll(Tactic):
         newstate = state.copy()
 
         while True:
-            for name, hyp in state.hypotheses.items():
+            prev = newstate.copy()
+            # Iterate a snapshot of the *current* hypotheses; the old loop walked the
+            # original ``state`` and compared to it, so ``repeat=True`` never stabilized.
+            for name, hyp in list(newstate.hypotheses.items()):
                 other_hypotheses = set()
                 for other_name, other_hyp in newstate.hypotheses.items():
                     if other_name != name:  # Cannot use a hypothesis to simplify itself!
@@ -172,13 +175,13 @@ class SimpAll(Tactic):
             if goal == true:
                 print("Goal solved!")
                 return []
-            
+
             if not self.repeat:
                 break
 
-            if newstate.eq(state):
-                break  # if repeat is True, we keep simplifying until the goal stabilizes
-    
+            if newstate.eq(prev):
+                break  # if repeat is True, we keep simplifying until the state stabilizes
+
         return [newstate]
 
     def __str__(self) -> str:

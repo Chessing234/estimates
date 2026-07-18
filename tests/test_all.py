@@ -110,3 +110,17 @@ class TestAll(object):
     def test_sympy_simplify_solution(self, capsys):
         sympy_simplify_solution()
         self.proof_complete(capsys)
+
+    def test_simpall_repeat_terminates(self, capsys):
+        """SimpAll(repeat=True) must stabilize instead of looping forever."""
+        from sympy import Or
+        p = ProofAssistant()
+        p.var("bool", "P")
+        p.var("bool", "Q")
+        p.assume(p.get_var("P"), "hP")
+        p.assume(Or(p.get_var("P"), p.get_var("Q")), "hOr")
+        p.begin_proof(p.get_var("Q"))
+        p.use(SimpAll(repeat=True))
+        # Must return without hanging; goal may remain if not fully solved.
+        assert True
+
