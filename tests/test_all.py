@@ -119,6 +119,7 @@ class TestAll(object):
         p.assume(Or(Eq(x, 0), Eq(x, 1), Eq(x, 2), Eq(x, 3)), "h")
         p.begin_proof(x >= 0)
         p.use(Cases("h"))
+        p.go_back()
         capsys.readouterr()
         p.go_forward(99)
         out = capsys.readouterr().out
