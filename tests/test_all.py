@@ -121,6 +121,4 @@ class TestAll(object):
         p.use(LogLinarith())
         out = capsys.readouterr().out
         assert "Proof complete!" not in out
-        assert "unable to prove" in out or "Goal solved" not in out or "remaining" in out.lower() or True
-        # After fix, should not claim complete from reversed inequality.
-        assert "Proof complete!" not in out
+        assert "unable to prove goal" in out
