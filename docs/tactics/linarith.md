@@ -91,7 +91,7 @@ Similar to `Linarith()`, but now applies to order of magnitude inequalities rath
 Example:
 ```
 >>> from estimates.main import *
->>> p = loglinarith_imposssible_example()
+>>> p = loglinarith_impossible_example()
 Starting proof.  Current proof state:
 N: pos_int
 x: pos_real
