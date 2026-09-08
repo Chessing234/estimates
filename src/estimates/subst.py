@@ -11,6 +11,8 @@ from estimates.simp import simp
 class Let(Tactic):
     """
     A tactic to introduce a new variable, defined to equal a given expression.
+    The definitional hypothesis is named after the uniquified variable, e.g.
+    `y_def` or `x'_def` when `x` is already in use.
     """
 
     def __init__(self, name: str, expr: Basic) -> None:
@@ -26,12 +28,12 @@ class Let(Tactic):
             raise ValueError(
                 f"{self.expr!s} is not defined in the current proof state."
             )
-        name = state.new(self.name)
         newstate = state.copy()
+        name = newstate.new(self.name)
         var = new_var(typeof(self.expr), name)
         newstate.hypotheses[name] = Type(var)
         print(f"Letting {name} := {self.expr}.")
-        def_name = state.new(self.name + "_def")
+        def_name = newstate.new(name + "_def")
         newstate.hypotheses[def_name] = Eq(var, self.expr)
         return [newstate]
 
@@ -46,6 +48,7 @@ class Let(Tactic):
 class Set(Tactic):
     """
     A tactic to introduce a new variable, defined to equal a given expression, then substitute all instances of that expression with the variable.
+    The definitional hypothesis is named after the uniquified variable.
     """
 
     def __init__(self, name: str, expr: Basic) -> None:
@@ -61,8 +64,8 @@ class Set(Tactic):
             raise ValueError(
                 f"{self.expr!s} is not defined in the current proof state."
             )
-        name = state.new(self.name)
         newstate = state.copy()
+        name = newstate.new(self.name)
         var = new_var(typeof(self.expr), name)
         newstate.hypotheses[name] = Type(var)
         print(f"Setting {name} := {self.expr}.")
@@ -73,7 +76,7 @@ class Set(Tactic):
 
         newstate.set_goal(state.goal.subs(self.expr, var))
 
-        def_name = state.new(self.name + "_def")
+        def_name = newstate.new(name + "_def")
         newstate.hypotheses[def_name] = Eq(var, self.expr)
         return [newstate]
 
