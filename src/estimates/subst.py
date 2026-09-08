@@ -47,7 +47,7 @@ class Let(Tactic):
         return f"let {self.name} := {self.expr}"
 
     label = "Let"
-    description = "Introduce a new variable, defined to equal a given expression."
+    description = "Introduce a new variable, defined to equal a given expression. The definitional hypothesis is named after the (possibly primed) variable."
     arguments = ["variables", "expressions"]
 
 
@@ -85,7 +85,7 @@ class Set(Tactic):
         return f"set {self.name} := {self.expr}"
 
     label = "Set"
-    description = "Introduce a new variable, defined to equal a given expression, then substitute all instances of that expression with the variable."
+    description = "Introduce a new variable, defined to equal a given expression, then substitute all instances of that expression with the variable. The definitional hypothesis is named after the (possibly primed) variable."
     arguments = ["variables", "expressions"]
 
 
