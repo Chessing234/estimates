@@ -18,3 +18,9 @@ def test_rsimp_nested_add_with_sympy():
     expr = Add(x + 0, Integer(0), evaluate=False)
     out = rsimp(expr, set(), True)
     assert out == x
+
+
+def test_rsimp_without_flag_keeps_structure():
+    x = Symbol("x", real=True)
+    expr = (x + 1) * (x - 1)
+    assert rsimp(expr, set(), False) == expr
